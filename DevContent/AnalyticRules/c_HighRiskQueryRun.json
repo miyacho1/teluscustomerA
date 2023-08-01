@@ -1,0 +1,74 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/8e16a2c1-94a0-419e-b25f-7645605945f6')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/8e16a2c1-94a0-419e-b25f-7645605945f6')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2021-10-01-preview",
+            "properties": {
+                "displayName": "c_HighRiskQueryRun",
+                "description": "Sensitve Table Queried",
+                "severity": "Low",
+                "enabled": true,
+                "query": "let keywords = dynamic([\"AADUserRiskEvents\", \"IdentityInfo\"]);//specify list of items\nLAQueryLogs\n| extend keyword_lower = tolower(keywords) //convert all items in specified keywords list to lowercase\n| extend querytext_lower = tolower(QueryText) //convert kql queries executed to lowercase\n| where querytext_lower has_any(keywords) //compare values with list mentioned\n| extend searchuser = AADEmail\n| project TimeGenerated, searchuser, QueryText, RequestClientApp, RequestTarget, ResponseCode, ResponseRowCount, ResponseDurationMs, CorrelationId\n\n",
+                "queryFrequency": "PT1H",
+                "queryPeriod": "PT5H",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "tactics": [],
+                "techniques": [],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": true,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": {
+                    "querycontent": "QueryText"
+                },
+                "entityMappings": [
+                    {
+                        "entityType": "Account",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Name",
+                                "columnName": "searchuser"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "Process",
+                        "fieldMappings": [
+                            {
+                                "identifier": "CommandLine",
+                                "columnName": "QueryText"
+                            }
+                        ]
+                    }
+                ],
+                "sentinelEntitiesMappings": null
+            }
+        }
+    ]
+}

@@ -1,0 +1,78 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/303bc74c-83d9-45a2-8a6b-7ec7392e440d')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/303bc74c-83d9-45a2-8a6b-7ec7392e440d')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2022-11-01-preview",
+            "properties": {
+                "displayName": "GH - Login from outside Toronto",
+                "description": "login from outside of toronto",
+                "severity": "Medium",
+                "enabled": true,
+                "query": "SigninLogs\n| where UserPrincipalName == \"rpol@telussecuritydev.onmicrosoft.com\"\n| project\n    TimeGenerated,\n    UserPrincipalName,\n    Identity,\n    IPAddress,\n    LocationDetails.city,\n    LocationDetails.state,\n    LocationDetails.countryOrRegion\n| project-rename\n    Time=TimeGenerated,\n    City=LocationDetails_city,\n    Province=LocationDetails_state,\n    Country=LocationDetails_countryOrRegion\n| where City <> \"Toronto\"",
+                "queryFrequency": "PT10M",
+                "queryPeriod": "PT1H",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "startTimeUtc": null,
+                "tactics": [],
+                "techniques": [],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": true,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": {
+                    "alertDisplayNameFormat": "Alert for {{UserPrincipalName}} from {{ProviderName}|",
+                    "alertDescriptionFormat": "Alert at {{Time}} from {{City}}",
+                    "alertDynamicProperties": []
+                },
+                "customDetails": null,
+                "entityMappings": [
+                    {
+                        "entityType": "Account",
+                        "fieldMappings": [
+                            {
+                                "identifier": "AadUserId",
+                                "columnName": "UserPrincipalName"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "IP",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Address",
+                                "columnName": "IPAddress"
+                            }
+                        ]
+                    }
+                ],
+                "sentinelEntitiesMappings": null,
+                "templateVersion": null
+            }
+        }
+    ]
+}

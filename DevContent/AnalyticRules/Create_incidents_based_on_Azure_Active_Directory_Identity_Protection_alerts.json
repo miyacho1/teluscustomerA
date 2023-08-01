@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/4abc3297-5816-4b41-931e-343616c62c29')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/4abc3297-5816-4b41-931e-343616c62c29')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "MicrosoftSecurityIncidentCreation",
+            "apiVersion": "2021-10-01-preview",
+            "properties": {
+                "displayName": "Create incidents based on Azure Active Directory Identity Protection alerts",
+                "description": "Create incidents based on all alerts generated in Azure Active Directory Identity Protection",
+                "enabled": true,
+                "productFilter": "Azure Active Directory Identity Protection",
+                "severitiesFilter": null,
+                "displayNamesFilter": null,
+                "displayNamesExcludeFilter": null,
+                "alertRuleTemplateName": "532c1811-79ee-4d9f-8d4d-6304c840daa1"
+            }
+        }
+    ]
+}

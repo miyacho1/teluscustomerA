@@ -1,0 +1,77 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/ec9db1e7-c5c7-4b75-a6f3-3fccf3b46d8a')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/ec9db1e7-c5c7-4b75-a6f3-3fccf3b46d8a')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2021-10-01-preview",
+            "properties": {
+                "displayName": "c_Exchange AuditLog disabled",
+                "description": "Identifies when the exchange audit logging has been disabled which may be an adversary attempt\nto evade detection or avoid other defenses.",
+                "severity": "Medium",
+                "enabled": true,
+                "query": "OfficeActivity\n| where UserType in~ (\"Admin\", \"DcAdmin\") \n| where Operation =~ \"Set-AdminAuditLogConfig\"\n| mv-expand param=parse_json(Parameters)\n| where param[\"Name\"] =~  \"UnifiedAuditLogIngestionEnabled\" and param[\"Value\"] =~ \"False\" // added unified audit log instead of Adminaudit log\n| summarize\n    StartTimeUtc = min(TimeGenerated),\n    EndTimeUtc = max(TimeGenerated),\n    OperationCount = count()\n    by\n    Operation,\n    UserType,\n    UserId,\n    ClientIP,\n    ResultStatus,\n    Parameters // tookout the admin audit parameter\n| extend\n    timestamp = StartTimeUtc,\n    AccountCustomEntity = UserId,\n    IPCustomEntity = ClientIP\n",
+                "queryFrequency": "P1D",
+                "queryPeriod": "P10D",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "tactics": [
+                    "DefenseEvasion"
+                ],
+                "techniques": [
+                    "T1562"
+                ],
+                "alertRuleTemplateName": "194dd92e-d6e7-4249-85a5-273350a7f5ce",
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": [
+                    {
+                        "entityType": "Account",
+                        "fieldMappings": [
+                            {
+                                "identifier": "FullName",
+                                "columnName": "AccountCustomEntity"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "IP",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Address",
+                                "columnName": "IPCustomEntity"
+                            }
+                        ]
+                    }
+                ],
+                "sentinelEntitiesMappings": null,
+                "templateVersion": "1.0.0"
+            }
+        }
+    ]
+}

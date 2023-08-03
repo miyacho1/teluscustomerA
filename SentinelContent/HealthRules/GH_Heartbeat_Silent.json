@@ -1,0 +1,77 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/8a403a33-a9af-4957-991b-a5a89f3d5138')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/8a403a33-a9af-4957-991b-a5a89f3d5138')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2022-11-01-preview",
+            "properties": {
+                "displayName": "GH - TS- agent heartbeat silent more than 30 min during last 24 hours",
+                "description": "Heartbeat silent health alert",
+                "severity": "High",
+                "enabled": true,
+                "query": "Heartbeat\n//| where TimeGenerated >= ago(24h) //Set lookback period\n| summarize LastHeartbeat=arg_max(TimeGenerated, *) by Computer\n//Set offline criteria\n| extend Alive = case (LastHeartbeat >= now(-30m), 'Yes', 'No')\n//Calculate minutes since last heartbeat \n| extend MinutesSilent = datetime_diff('minute', now(), LastHeartbeat)\n| where Alive == 'No'\n| project Computer, ComputerIP, OSType, Alive, LastHeartbeat, MinutesSilent, ComputerEnvironment \n\n",
+                "queryFrequency": "PT5M",
+                "queryPeriod": "P1D",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "startTimeUtc": null,
+                "tactics": [],
+                "techniques": [],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": true,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "P1D",
+                        "matchingMethod": "Selected",
+                        "groupByEntities": [
+                            "Host",
+                            "IP"
+                        ],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": [
+                    {
+                        "entityType": "Host",
+                        "fieldMappings": [
+                            {
+                                "identifier": "HostName",
+                                "columnName": "Computer"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "IP",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Address",
+                                "columnName": "ComputerIP"
+                            }
+                        ]
+                    }
+                ],
+                "sentinelEntitiesMappings": null,
+                "templateVersion": null
+            }
+        }
+    ]
+}

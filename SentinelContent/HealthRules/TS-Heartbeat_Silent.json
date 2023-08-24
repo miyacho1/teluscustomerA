@@ -14,7 +14,7 @@
             "kind": "Scheduled",
             "apiVersion": "2022-11-01-preview",
             "properties": {
-                "displayName": "GH - TS- agent heartbeat silent more than 30 min during last 24 hours",
+                "displayName": "TS-Agent heartbeat silent more than 30 min during last 24 hours",
                 "description": "Heartbeat silent health alert",
                 "severity": "High",
                 "enabled": true,

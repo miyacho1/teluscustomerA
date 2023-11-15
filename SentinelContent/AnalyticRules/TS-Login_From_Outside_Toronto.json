@@ -14,7 +14,7 @@
             "kind": "Scheduled",
             "apiVersion": "2022-11-01-preview",
             "properties": {
-                "displayName": "GH - Login from outside Toronto",
+                "displayName": "TS-Login from outside Toronto",
                 "description": "login from outside of toronto",
                 "severity": "Medium",
                 "enabled": true,

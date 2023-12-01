@@ -1,0 +1,64 @@
+{
+  "id": "/subscriptions/26613501-ed23-4f10-8aed-bd633914579d/resourceGroups/wksp-ws-01/providers/Microsoft.OperationalInsights/workspaces/wksp-la/providers/Microsoft.SecurityInsights/alertRules/303bc74c-83d9-45a2-8a6b-7ec7392e440d",
+  "name": "303bc74c-83d9-45a2-8a6b-7ec7392e440d",
+  "etag": "\"70012989-0000-0100-0000-65550dd70000\"",
+  "type": "Microsoft.SecurityInsights/alertRules",
+  "kind": "Scheduled",
+  "properties": {
+    "queryFrequency": "PT10M",
+    "queryPeriod": "PT1H",
+    "triggerOperator": "GreaterThan",
+    "triggerThreshold": 0,
+    "eventGroupingSettings": {
+      "aggregationKind": "SingleAlert"
+    },
+    "incidentConfiguration": {
+      "createIncident": true,
+      "groupingConfiguration": {
+        "enabled": true,
+        "reopenClosedIncident": false,
+        "lookbackDuration": "PT5H",
+        "matchingMethod": "AllEntities",
+        "groupByEntities": [],
+        "groupByAlertDetails": [],
+        "groupByCustomDetails": []
+      }
+    },
+    "entityMappings": [
+      {
+        "entityType": "Account",
+        "fieldMappings": [
+          {
+            "identifier": "AadUserId",
+            "columnName": "UserPrincipalName"
+          }
+        ]
+      },
+      {
+        "entityType": "IP",
+        "fieldMappings": [
+          {
+            "identifier": "Address",
+            "columnName": "IPAddress"
+          }
+        ]
+      }
+    ],
+    "alertDetailsOverride": {
+      "alertDisplayNameFormat": "Alert for {{UserPrincipalName}} from {{ProviderName}|",
+      "alertDescriptionFormat": "Alert at {{Time}} from {{City}}",
+      "alertDynamicProperties": []
+    },
+    "severity": "Medium",
+    "query": "SigninLogs\n| where UserPrincipalName == \"rpol@telussecuritydev.onmicrosoft.com\"\n| project\n    TimeGenerated,\n    UserPrincipalName,\n    Identity,\n    IPAddress,\n    LocationDetails.city,\n    LocationDetails.state,\n    LocationDetails.countryOrRegion\n| project-rename\n    Time=TimeGenerated,\n    City=LocationDetails_city,\n    Province=LocationDetails_state,\n    Country=LocationDetails_countryOrRegion\n| where City <> \"Toronto\"",
+    "suppressionDuration": "PT5H",
+    "suppressionEnabled": false,
+    "tactics": [],
+    "techniques": [],
+    "displayName": "TSDEV-Login from outside Toronto",
+    "enabled": true,
+    "description": "login from outside of toronto",
+    "alertRuleTemplateName": null,
+    "lastModifiedUtc": "2023-11-15T18:28:38.8611556Z"
+  }
+}

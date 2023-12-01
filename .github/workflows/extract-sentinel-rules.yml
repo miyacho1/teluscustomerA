@@ -91,7 +91,7 @@ jobs:
 
     - name: Commit and Push Changes
       run: |
-        git config --global user.name 'Rixon Polvi'
+        git config --global user.name 'RixonTelus'
         git config --global user.email 'rixon.polvi@telus.com'
         git add .
         $currentDate = Get-Date -Format "yyyy-MM-dd HH:mm"

@@ -94,9 +94,20 @@ jobs:
         git config --global user.name 'RixonTelus'
         git config --global user.email 'rixon.polvi@telus.com'
         git add .
-        $currentDate = Get-Date -Format "yyyy-MM-dd HH:mm"
-        git commit -m "Nightly Sentinel rule update - $currentDate"
-        # Only push if there are changes to commit
-        git diff --quiet && git diff --staged --quiet || git push
+
+        # Check for unstaged changes
+        git status
+
+        if (git diff-index --quiet HEAD --) {
+          Write-Host "No changes detected."
+        } else {
+          # Commit if there are changes
+          $currentDate = Get-Date -Format "yyyy-MM-dd HH:mm"
+          git commit -m "Nightly Sentinel rule update - $currentDate"
+          
+          # Push the changes
+          git push origin HEAD:$(git branch --show-current)
+          Write-Host "Changes have been pushed."
+        }
       env:
         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}

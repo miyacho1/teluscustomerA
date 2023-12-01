@@ -1,0 +1,107 @@
+title: Possible Admin Account or Group Enumeration (via cmdline)
+status: stable
+description: Adversaries may attempt to get a listing/permissions and other info of local system or domain accounts. The reliance on the surrounding environment may necessitate the implementation of additional filtering measures to prevent false positives.
+author: SOC Prime Team
+references:
+    - https://www.infosecurity-magazine.com/news/signature-techniques-of-asian-apt/
+    - https://www.sentinelone.com/labs/operation-tainted-love-chinese-apts-target-telcos-in-new-attacks/
+    - https://www.attackiq.com/2023/07/28/emulating-gallium/
+    - https://www.welivesecurity.com/2023/06/08/asylum-ambuscade-crimeware-or-cyberespionage/
+    - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-144a
+    - https://securityintelligence.com/posts/x-force-prevents-zero-day-from-going-anywhere/
+    - https://www.mandiant.com/resources/blog/unc961-multiverse-financially-motivated
+    - https://www.mandiant.com/resources/blog/turla-galaxy-opportunity
+    - https://thedfirreport.com/2022/09/26/bumblebee-round-two/
+    - https://www.mandiant.com/resources/likely-iranian-threat-actor-conducts-politically-motivated-disruptive-activity-against?1
+    - https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability/
+    - https://www.esentire.com/blog/nitrogen-campaign-2-0-reloads-with-enhanced-capabilities-leading-to-alphv-blackcat-ransomware
+tags:
+    - attack.discovery
+    - attack.t1087.001
+    - attack.t1087.002
+    - attack.t1033
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_admin:
+        CommandLine|contains:
+            - 'admin'
+            - 'controllers'
+    selection:
+        Image|endswith:
+            - 'chcp.com'
+            - 'whoami.exe'
+            - 'wmic.exe'
+            - 'net.exe'
+            - 'net1.exe'
+            - 'dsquery.exe'
+        CommandLine|contains:
+            - '2>&1' #cmd /c "cd /d "C:/<path>/jboss-4.2.3.GA/bin/"&net user" 2>&1
+            - '/all'
+            - '-all'
+            - '/upn'
+            - '/fqdn'
+            - 'useraccount'
+            - 'user'
+            - 'group'
+            - 'accounts'
+            - 'localgroup'
+            - 'domain'
+            - '/priv'
+            - 'ds_user'
+            - 'ds_group'
+            - 'ds_computer'
+            #- '/domain'
+            - /dom
+            - '/add'
+            #- '/delete' #FPs in big env.
+            - '/active'
+            - '/expires'
+            - '/passwordreq'
+            - '/scriptpath'
+            - '/times'
+            - '/workstations'
+    selection_ps:
+        CommandLine|contains:
+            - 'Get-LocalGroup'
+            - 'Get-LocalGroupMember'
+            - 'Get-LocalUser'
+            - 'Microsoft.ActiveDirectory.Management.dll'
+    selection_rare_images:
+        Image|endswith:
+            - 'quser.exe'
+            - 'qwinsta.exe'
+            - 'ldifde.exe'
+            - 'csvde.exe' #https://social.technet.microsoft.com/wiki/contents/articles/2113.comma-separated-value-directory-exchange-csvde-utility.aspx
+            - 'whoami.exe'
+            - 'klist.exe'
+    filters:
+        - ParentImage|endswith:
+            - '\thor\thor64.exe'
+            - 'amazon-ssm-agent.exe'
+            - 'PrinterLogicIdpAuthentication.exe'
+            - 'AwWindowsIpc.exe'
+            - 'EikonBoxNet.exe'
+            - 'TaxBack.exe'
+            - 'MonitoringHost.exe'
+            - 'ssm-agent-worker.exe'
+            - '32\svchost.exe' #task sheduler
+        #- CommandLine:
+        #    - '"net.exe" accounts' #C:\ProgramData\Microsoft\Windows Defender Advanced Threat Protection\DataCollection\
+        #- User|contains:
+        #    - '$'
+        #    - 'SYSTEM'
+        #    - 'SERVICE'
+        #    - 'AUTHORITY'
+        - Image|endswith:
+            - 'tasklist.exe'
+    selection_scope_process_creation:
+        - ParentImage|contains:
+            - '.exe' #to avoide possible match with image_load, etc.
+    condition: (selection or selection_ps or selection_rare_images) and not filters and selection_scope_process_creation and selection_admin
+falsepositives:
+    - Administrative activity.
+    - It is highly recommended to baseline your activity and tune out common business use cases.
+    - The reliance on the surrounding environment may necessitate the implementation of additional filtering measures to prevent false positives.
+level: high

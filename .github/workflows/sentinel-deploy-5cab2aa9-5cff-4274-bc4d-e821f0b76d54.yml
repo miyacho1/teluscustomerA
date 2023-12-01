@@ -13,7 +13,9 @@ on:
   push:
     branches: [ main ]
     paths:
-    - 'SentinelContent/**'
+    - 'SentinelContent/Sigma/**'
+    - 'SentinelContent/AnalyticRules/**'
+    - 'SentinelContent/HealthRules/**'
     - '!.github/workflows/**'  # this filter prevents other workflow changes from triggering this workflow
     - '.github/workflows/sentinel-deploy-5cab2aa9-5cff-4274-bc4d-e821f0b76d54.yml'
 

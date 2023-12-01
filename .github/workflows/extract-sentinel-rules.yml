@@ -61,6 +61,14 @@ jobs:
       
     - name: Checkout Repository
       uses: actions/checkout@v3
+    
+    - name: Install Azure PowerShell Module
+      run: |
+        Install-Module -Name Az -Scope CurrentUser -Force -AllowClobber
+
+    - name: Import Azure PowerShell Module
+      run: |
+        Import-Module Az
 
     - name: Extract Sentinel Rules
       run: |

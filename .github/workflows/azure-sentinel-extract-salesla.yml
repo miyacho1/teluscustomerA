@@ -16,45 +16,15 @@ jobs:
         cloudEnv: 'AzureCloud'
         creds: ${{ secrets.AZURE_SENTINEL_CREDENTIALS_5cab2aa95cff4274bc4de821f0b76d54 }}
         branch: 'main'
-        rootDirectory: '${{ github.workspace }}'
-        githubAuthToken: ${{ secrets.GITHUB_TOKEN }}
         #sourceControlId: '5cab2aa9-5cff-4274-bc4d-e821f0b76d54'
 
     steps:
-    - name: Login to Azure (Attempt 1)
-      continue-on-error: true
-      id: login1
+    - name: Login Azure
       uses: azure/login@v1
-      if: ${{ env.cloudEnv == 'AzureCloud' }}
       with:
-        creds: ${{ secrets.AZURE_SENTINEL_CREDENTIALS_5cab2aa95cff4274bc4de821f0b76d54 }}
-        enable-AzPSSession: true
-
-    - name: Wait 30 seconds if login attempt 1 failed
-      if: ${{ env.cloudEnv == 'AzureCloud' && steps.login1.outcome=='failure' }}
-      run: powershell Start-Sleep -s 30
-    
-    - name: Login to Azure (Attempt 2)
-      continue-on-error: true
-      id: login2
-      uses: azure/login@v1
-      if: ${{ env.cloudEnv == 'AzureCloud' && steps.login1.outcome=='failure' }}
-      with:
-        creds: ${{ secrets.AZURE_SENTINEL_CREDENTIALS_5cab2aa95cff4274bc4de821f0b76d54 }}
-        enable-AzPSSession: true
-
-    - name: Wait 30 seconds if login attempt 2 failed
-      if: ${{ env.cloudEnv == 'AzureCloud' && steps.login2.outcome=='failure' }}
-      run: powershell Start-Sleep -s 30
-    
-    - name: Login to Azure (Attempt 3)
-      continue-on-error: false
-      id: login3
-      uses: azure/login@v1
-      if: ${{ env.cloudEnv == 'AzureCloud' && steps.login2.outcome=='failure'  }}
-      with:
-        creds: ${{ secrets.AZURE_SENTINEL_CREDENTIALS_5cab2aa95cff4274bc4de821f0b76d54 }}
-        enable-AzPSSession: true
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       
     - name: Checkout Repository
       uses: actions/checkout@v3

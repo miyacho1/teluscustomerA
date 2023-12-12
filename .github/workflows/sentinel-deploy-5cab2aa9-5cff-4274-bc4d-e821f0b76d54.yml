@@ -16,7 +16,7 @@ on:
     #- 'SentinelContent/Sigma/**'
     - 'SentinelContent/AnalyticRules/**'
     - 'SentinelContent/HealthRules/**'
-    - 'SentinelContent/CrossWorkspace/**'
+    - 'SentinelContent/ExtractedRules/**'
     - '!.github/workflows/**'  # this filter prevents other workflow changes from triggering this workflow
     - '.github/workflows/sentinel-deploy-5cab2aa9-5cff-4274-bc4d-e821f0b76d54.yml'
     workflow_dispatch: # Allows manual trigger
@@ -82,4 +82,4 @@ jobs:
       with:
         azPSVersion: 'latest'
         inlineScript: |
-          ${{ github.workspace }}//.github/workflows/azure-sentinel-deploy-5cab2aa9-5cff-4274-bc4d-e821f0b76d54.ps1
+          ${{ github.workspace }}//.github/workflows/scripts/azure-sentinel-deploy-5cab2aa9-5cff-4274-bc4d-e821f0b76d54.ps1

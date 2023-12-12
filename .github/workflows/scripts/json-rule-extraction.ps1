@@ -1,7 +1,7 @@
 # Variables
 $currentDirectory = Get-Location
 #$outputDirectory = Join-Path -Path $currentDirectory -ChildPath "Rules"
-$outputDirectory = "..\SentinelContent\ExtractedRules"
+$outputDirectory = "./SentinelContent/ExtractedRules"
 $inputFilePath = "RuleExport\Export.json"
 
 # Check for output directory
@@ -10,7 +10,7 @@ if (-not (Test-Path -Path $outputDirectory)) {
     Write-Host "Creating output directory -" $outputDirectory
     New-Item -ItemType Directory -Path $outputDirectory
 }
-Write-Host "DONE" -ForegroundColor Green
+Write-Host "Tested" $outputDirectory -ForegroundColor Green
 
 # Check for input file
 Write-Host "Testing for input file -" $inputFilePath
@@ -18,7 +18,7 @@ if (-not (Test-Path -Path $inputFilePath)) {
     Write-Host "Input file missing!" $inputFilePath
     Exit
 }
-Write-Host "DONE" -ForegroundColor Green
+Write-Host "Tested" $inputFilePath -ForegroundColor Green
 
 # Read the JSON content
 # Get rules from the resources key

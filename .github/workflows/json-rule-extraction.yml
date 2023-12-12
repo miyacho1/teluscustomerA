@@ -1,0 +1,42 @@
+name: Extract Sentinel analytic rules from export
+
+on: 
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  extract-rules:
+    runs-on: windows-latest
+    env:
+      rootDirectory: '${{ github.workspace }}'
+      githubAuthToken: ${{ secrets.GITHUB_TOKEN }}
+      branch: 'dev'
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Run the extraction script
+      shell: pwsh
+      run: |
+        ${{ github.workspace }}//.github/workflows/scripts/json-rule-extraction.ps1
+
+    - name: Commit and Push Changes
+      run: |
+        git config --global user.name 'RixonTelus'
+        git config --global user.email 'rixon.polvi@telus.com'
+        git add .
+
+        # Check for unstaged changes
+        git status
+
+        if (git diff-index --quiet HEAD --) {
+        Write-Host "No changes detected."
+        } else {
+        # Commit if there are changes
+        $currentDate = Get-Date -Format "yyyy-MM-dd HH:mm"
+        git commit -m "Extracted Rules - $currentDate"
+        
+        # Push the changes
+        git push origin HEAD:$(git branch --show-current)
+        Write-Host "Changes have been pushed."
+        }

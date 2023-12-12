@@ -152,87 +152,6 @@
             }
         },
         {
-            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/c4f23722-ce8f-4bc8-ab89-3b170e28436f')]",
-            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/c4f23722-ce8f-4bc8-ab89-3b170e28436f')]",
-            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
-            "kind": "Scheduled",
-            "apiVersion": "2022-11-01-preview",
-            "properties": {
-                "displayName": "ts-triggeralert",
-                "description": "",
-                "severity": "Medium",
-                "enabled": true,
-                "query": "datatable(\n    user: string,\n    ip1: string,\n    ip2: string,\n    host: string,\n    filehash: string,\n    url: string\n)[\n    \"TU1@TELUSsecurityDev.onmicrosoft.com\", \"142.63.18.145\", \"142.174.178.243\", \"win11-add\", \"57a0ba0158324694abfb3f12b98707d6c1e289ad62d0e4314a904972d490b37f\", \"https://www.blurbshop.com\",\n    \"TU2@TELUSsecurityDev.onmicrosoft.com\", \"142.63.18.146\", \"142.174.178.244\", \"vm01\", \"57a0ba0158324694abfb3f12b98707d6c1e289ad62d0e4314a904972d490b37f\", \"https://www.blurbshop.com\"\n]\n",
-                "queryFrequency": "PT5M",
-                "queryPeriod": "PT5M",
-                "triggerOperator": "GreaterThan",
-                "triggerThreshold": 0,
-                "suppressionDuration": "PT5H",
-                "suppressionEnabled": false,
-                "startTimeUtc": null,
-                "tactics": [],
-                "techniques": [],
-                "alertRuleTemplateName": null,
-                "incidentConfiguration": {
-                    "createIncident": true,
-                    "groupingConfiguration": {
-                        "enabled": false,
-                        "reopenClosedIncident": false,
-                        "lookbackDuration": "PT5H",
-                        "matchingMethod": "AllEntities",
-                        "groupByEntities": [],
-                        "groupByAlertDetails": [],
-                        "groupByCustomDetails": []
-                    }
-                },
-                "eventGroupingSettings": {
-                    "aggregationKind": "SingleAlert"
-                },
-                "alertDetailsOverride": null,
-                "customDetails": null,
-                "entityMappings": [
-                    {
-                        "entityType": "IP",
-                        "fieldMappings": [
-                            {
-                                "identifier": "Address",
-                                "columnName": "ip1"
-                            }
-                        ]
-                    },
-                    {
-                        "entityType": "IP",
-                        "fieldMappings": [
-                            {
-                                "identifier": "Address",
-                                "columnName": "ip2"
-                            }
-                        ]
-                    },
-                    {
-                        "entityType": "Account",
-                        "fieldMappings": [
-                            {
-                                "identifier": "FullName",
-                                "columnName": "user"
-                            }
-                        ]
-                    },
-                    {
-                        "entityType": "Host",
-                        "fieldMappings": [
-                            {
-                                "identifier": "HostName",
-                                "columnName": "host"
-                            }
-                        ]
-                    }
-                ],
-                "sentinelEntitiesMappings": null,
-                "templateVersion": null
-            }
-        },
-        {
             "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/717ec7f2-064e-4358-ba0e-b81aa2fcc2be')]",
             "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/717ec7f2-064e-4358-ba0e-b81aa2fcc2be')]",
             "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
@@ -284,23 +203,6 @@
                 ],
                 "sentinelEntitiesMappings": null,
                 "templateVersion": null
-            }
-        },
-        {
-            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/69d558fa-8979-4e4b-b1ed-5f79e0ba03be')]",
-            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/69d558fa-8979-4e4b-b1ed-5f79e0ba03be')]",
-            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
-            "kind": "MicrosoftSecurityIncidentCreation",
-            "apiVersion": "2022-11-01-preview",
-            "properties": {
-                "displayName": "Create Incident from Microsoft Defender for Endpoint",
-                "description": "Create Incident from Microsoft Defender for Endpoint",
-                "enabled": false,
-                "productFilter": "Microsoft Defender Advanced Threat Protection",
-                "severitiesFilter": null,
-                "displayNamesFilter": null,
-                "displayNamesExcludeFilter": null,
-                "alertRuleTemplateName": null
             }
         }
     ]

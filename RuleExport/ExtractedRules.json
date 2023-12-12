@@ -1,0 +1,307 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/337c1d7c-79cc-43b2-a3d7-8a45511ae811')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/337c1d7c-79cc-43b2-a3d7-8a45511ae811')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2022-11-01-preview",
+            "properties": {
+                "displayName": "TS-Cross Workspace Query 2-WkspLA",
+                "description": "Cross workspace query test",
+                "severity": "High",
+                "enabled": true,
+                "query": "workspace(\"/subscriptions/26613501-ed23-4f10-8aed-bd633914579d/resourceGroups/wksp-ws-01/providers/Microsoft.OperationalInsights/workspaces/wksp-la\").AzureActivity\r\n| take 1\r\n| summarize Countb=count() by Type, OperationNameValue, Level",
+                "queryFrequency": "PT1H",
+                "queryPeriod": "PT1H",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "startTimeUtc": null,
+                "tactics": [
+                    "Reconnaissance"
+                ],
+                "techniques": [
+                    "T1595"
+                ],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": null,
+                "sentinelEntitiesMappings": null,
+                "templateVersion": null
+            }
+        },
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/14a46b04-c973-4be4-95f3-837f360f51aa')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/14a46b04-c973-4be4-95f3-837f360f51aa')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2022-11-01-preview",
+            "properties": {
+                "displayName": "TS-Cross Workspace Query 3-WkspLA",
+                "description": "Cross workspace query test",
+                "severity": "High",
+                "enabled": true,
+                "query": "workspace(\"/subscriptions/26613501-ed23-4f10-8aed-bd633914579d/resourceGroups/wksp-ws-01/providers/Microsoft.OperationalInsights/workspaces/wksp-la\").AzureActivity\r\n| take 1\r\n| summarize Counta=count() by Type, OperationNameValue, Level",
+                "queryFrequency": "PT2H",
+                "queryPeriod": "PT2H",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "startTimeUtc": null,
+                "tactics": [
+                    "Reconnaissance"
+                ],
+                "techniques": [
+                    "T1595"
+                ],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": null,
+                "sentinelEntitiesMappings": null,
+                "templateVersion": null
+            }
+        },
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/61f767b0-ebc7-418c-9a59-cc91b8e0d3da')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/61f767b0-ebc7-418c-9a59-cc91b8e0d3da')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2022-11-01-preview",
+            "properties": {
+                "displayName": "TS-Cross Workspace Query-WkspLA",
+                "description": "Cross workspace query test",
+                "severity": "High",
+                "enabled": true,
+                "query": "workspace(\"/subscriptions/26613501-ed23-4f10-8aed-bd633914579d/resourceGroups/wksp-ws-01/providers/Microsoft.OperationalInsights/workspaces/wksp-la\").AzureActivity\r\n| take 1\r\n| summarize Count=count() by Type, OperationNameValue, Level",
+                "queryFrequency": "PT12H",
+                "queryPeriod": "PT12H",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "startTimeUtc": null,
+                "tactics": [
+                    "Reconnaissance"
+                ],
+                "techniques": [
+                    "T1595"
+                ],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": null,
+                "sentinelEntitiesMappings": null,
+                "templateVersion": null
+            }
+        },
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/c4f23722-ce8f-4bc8-ab89-3b170e28436f')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/c4f23722-ce8f-4bc8-ab89-3b170e28436f')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2022-11-01-preview",
+            "properties": {
+                "displayName": "ts-triggeralert",
+                "description": "",
+                "severity": "Medium",
+                "enabled": true,
+                "query": "datatable(\n    user: string,\n    ip1: string,\n    ip2: string,\n    host: string,\n    filehash: string,\n    url: string\n)[\n    \"TU1@TELUSsecurityDev.onmicrosoft.com\", \"142.63.18.145\", \"142.174.178.243\", \"win11-add\", \"57a0ba0158324694abfb3f12b98707d6c1e289ad62d0e4314a904972d490b37f\", \"https://www.blurbshop.com\",\n    \"TU2@TELUSsecurityDev.onmicrosoft.com\", \"142.63.18.146\", \"142.174.178.244\", \"vm01\", \"57a0ba0158324694abfb3f12b98707d6c1e289ad62d0e4314a904972d490b37f\", \"https://www.blurbshop.com\"\n]\n",
+                "queryFrequency": "PT5M",
+                "queryPeriod": "PT5M",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "startTimeUtc": null,
+                "tactics": [],
+                "techniques": [],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": [
+                    {
+                        "entityType": "IP",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Address",
+                                "columnName": "ip1"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "IP",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Address",
+                                "columnName": "ip2"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "Account",
+                        "fieldMappings": [
+                            {
+                                "identifier": "FullName",
+                                "columnName": "user"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "Host",
+                        "fieldMappings": [
+                            {
+                                "identifier": "HostName",
+                                "columnName": "host"
+                            }
+                        ]
+                    }
+                ],
+                "sentinelEntitiesMappings": null,
+                "templateVersion": null
+            }
+        },
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/717ec7f2-064e-4358-ba0e-b81aa2fcc2be')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/717ec7f2-064e-4358-ba0e-b81aa2fcc2be')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2022-11-01-preview",
+            "properties": {
+                "displayName": "AgentHeartBeatMissed",
+                "description": "",
+                "severity": "Medium",
+                "enabled": true,
+                "query": "Heartbeat\n//| where TimeGenerated >= ago(24h) //Set lookback period\n| summarize LastHeartbeat=arg_max(TimeGenerated, *) by Computer\n//Set offline criteria\n| extend Alive = case (LastHeartbeat >= now(-1h), 'No', 'Yes')\n//Calculate minutes since last heartbeat \n| extend MinutesSilent = datetime_diff('minute', now(), LastHeartbeat)\n| where Alive == 'No'\n| where Computer has \"vm01\"\n| project\n    Computer,\n    ComputerIP,\n    OSType,\n    Alive,\n    LastHeartbeat,\n    MinutesSilent,\n    ComputerEnvironment \n\n",
+                "queryFrequency": "PT5H",
+                "queryPeriod": "PT5H",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "startTimeUtc": null,
+                "tactics": [],
+                "techniques": [],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": [
+                    {
+                        "entityType": "Host",
+                        "fieldMappings": [
+                            {
+                                "identifier": "HostName",
+                                "columnName": "Computer"
+                            }
+                        ]
+                    }
+                ],
+                "sentinelEntitiesMappings": null,
+                "templateVersion": null
+            }
+        },
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/69d558fa-8979-4e4b-b1ed-5f79e0ba03be')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/69d558fa-8979-4e4b-b1ed-5f79e0ba03be')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "MicrosoftSecurityIncidentCreation",
+            "apiVersion": "2022-11-01-preview",
+            "properties": {
+                "displayName": "Create Incident from Microsoft Defender for Endpoint",
+                "description": "Create Incident from Microsoft Defender for Endpoint",
+                "enabled": false,
+                "productFilter": "Microsoft Defender Advanced Threat Protection",
+                "severitiesFilter": null,
+                "displayNamesFilter": null,
+                "displayNamesExcludeFilter": null,
+                "alertRuleTemplateName": null
+            }
+        }
+    ]
+}

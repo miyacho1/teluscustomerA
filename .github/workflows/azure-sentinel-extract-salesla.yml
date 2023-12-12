@@ -1,0 +1,80 @@
+name: Extract Azure Sentinel Rules
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs every day at midnight
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  extract-rules:
+    runs-on: windows-latest
+    env:
+        subscriptionId: "26613501-ed23-4f10-8aed-bd633914579d"
+        resourceGroupName: 'sales-rg'
+        workspaceName: 'salesla'
+        workspaceId: '1382c2fb-d2c0-4e6d-979b-e1e32d96190e'
+        cloudEnv: 'AzureCloud'
+        creds: ${{ secrets.AZURE_SENTINEL_CREDENTIALS_5cab2aa95cff4274bc4de821f0b76d54 }}
+        branch: 'main'
+        #sourceControlId: '5cab2aa9-5cff-4274-bc4d-e821f0b76d54'
+
+    steps:
+    - name: Login Azure
+      uses: azure/login@v1
+      with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+    
+    - name: Install Azure PowerShell Module
+      run: |
+        Install-Module -Name Az -Scope CurrentUser -Force -AllowClobber
+
+    - name: Import Azure PowerShell Module
+      run: |
+        Import-Module Az
+
+    - name: Extract Sentinel Rules
+      run: |
+        # Define the Azure Sentinel workspace information
+        $subscriptionId = "26613501-ed23-4f10-8aed-bd633914579d"
+        $resourceGroupName = "sales-rg"
+        $workspaceName = "salesla"
+
+        # Set the subscription context
+        Set-AzContext -SubscriptionId $subscriptionId
+
+        # Get the list of Azure Sentinel analytic rules
+        $rules = Get-AzSentinelAlertRule -ResourceGroupName $resourceGroupName -WorkspaceName $workspaceName
+
+        # Export the rules to a JSON file
+        $rules | ConvertTo-Json | Out-File -FilePath "./SaleslaRuleExport/current-sentinel-rules.json"
+
+        # Output the total number of rules extracted
+        Write-Host "Total rules extracted: $($rules.Count)"
+
+    - name: Commit and Push Changes
+      run: |
+        git config --global user.name 'RixonTelus'
+        git config --global user.email 'rixon.polvi@telus.com'
+        git add .
+
+        # Check for unstaged changes
+        git status
+
+        if (git diff-index --quiet HEAD --) {
+          Write-Host "No changes detected."
+        } else {
+          # Commit if there are changes
+          $currentDate = Get-Date -Format "yyyy-MM-dd HH:mm"
+          git commit -m "Nightly Sentinel rule update - $currentDate"
+          
+          # Push the changes
+          git push origin HEAD:$(git branch --show-current)
+          Write-Host "Changes have been pushed."
+        }
+      env:
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}

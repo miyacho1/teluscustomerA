@@ -8,48 +8,12 @@
   },
   "resources": [
     {
-      "id": "/subscriptions/26613501-ed23-4f10-8aed-bd633914579d/resourceGroups/sales-rg/providers/Microsoft.OperationalInsights/workspaces/salesla/providers/Microsoft.SecurityInsights/alertRules/337c1d7c-79cc-43b2-a3d7-8a45511ae811",
-      "name": "337c1d7c-79cc-43b2-a3d7-8a45511ae811",
-      "etag": "\"7703af5b-0000-0100-0000-657732400000\"",
-      "type": "Microsoft.SecurityInsights/alertRules",
+      "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/280f4eee-b406-43cf-b460-60c1f1316277')]",
+      "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/280f4eee-b406-43cf-b460-60c1f1316277')]",
+      "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
       "kind": "Scheduled",
-      "properties": {
-        "queryFrequency": "PT1H",
-        "queryPeriod": "PT1H",
-        "triggerOperator": "GreaterThan",
-        "triggerThreshold": 0,
-        "eventGroupingSettings": {
-          "aggregationKind": "SingleAlert"
-        },
-        "incidentConfiguration": {
-          "createIncident": true,
-          "groupingConfiguration": {
-            "enabled": false,
-            "reopenClosedIncident": false,
-            "lookbackDuration": "PT5H",
-            "matchingMethod": "AllEntities",
-            "groupByEntities": [],
-            "groupByAlertDetails": [],
-            "groupByCustomDetails": []
-          }
-        },
-        "severity": "High",
-        "query": "AzureActivity\r\n| take 1\r\n| summarize Countb=count() by Type, OperationNameValue, Level",
-        "suppressionDuration": "PT5H",
-        "suppressionEnabled": false,
-        "tactics": [
-          "Reconnaissance"
-        ],
-        "techniques": [
-          "T1595"
-        ],
-        "displayName": "TS-Cross Workspace Query 2-WkspLA",
-        "enabled": true,
-        "description": "Cross workspace query test",
-        "alertRuleTemplateName": null,
-        "lastModifiedUtc": "2023-12-11T16:00:59.0028538Z"
-      },
-      "apiVersion": "2022-11-01"
+      "apiVersion": "2022-11-01-preview",
+      "properties": "{\r\n  \"queryFrequency\": \"PT1H\",\r\n  \"queryPeriod\": \"PT1H\",\r\n  \"triggerOperator\": \"GreaterThan\",\r\n  \"triggerThreshold\": 0,\r\n  \"eventGroupingSettings\": {\r\n    \"aggregationKind\": \"SingleAlert\"\r\n  },\r\n  \"incidentConfiguration\": {\r\n    \"createIncident\": true,\r\n    \"groupingConfiguration\": {\r\n      \"enabled\": false,\r\n      \"reopenClosedIncident\": false,\r\n      \"lookbackDuration\": \"PT5H\",\r\n      \"matchingMethod\": \"AllEntities\",\r\n      \"groupByEntities\": [],\r\n      \"groupByAlertDetails\": [],\r\n      \"groupByCustomDetails\": []\r\n    }\r\n  },\r\n  \"severity\": \"High\",\r\n  \"query\": \"AzureActivity\\r\\n| take 1\\r\\n| summarize Countb=count() by Type, OperationNameValue, Level\",\r\n  \"suppressionDuration\": \"PT5H\",\r\n  \"suppressionEnabled\": false,\r\n  \"tactics\": [\r\n    \"Reconnaissance\"\r\n  ],\r\n  \"techniques\": [\r\n    \"T1595\"\r\n  ],\r\n  \"displayName\": \"TS-Cross Workspace Query 2-WkspLA\",\r\n  \"enabled\": true,\r\n  \"description\": \"Cross workspace query test\",\r\n  \"alertRuleTemplateName\": null,\r\n  \"lastModifiedUtc\": \"2023-12-11T16:00:59.0028538Z\"\r\n}"
     }
   ]
 }

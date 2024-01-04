@@ -8,54 +8,12 @@
   },
   "resources": [
     {
-      "id": "/subscriptions/26613501-ed23-4f10-8aed-bd633914579d/resourceGroups/sales-rg/providers/Microsoft.OperationalInsights/workspaces/salesla/providers/Microsoft.SecurityInsights/alertRules/f284d334-8d86-4eb4-b196-5cb178317ad4",
-      "name": "f284d334-8d86-4eb4-b196-5cb178317ad4",
-      "etag": "\"0300e8b7-0000-0100-0000-643674f20000\"",
-      "type": "Microsoft.SecurityInsights/alertRules",
+      "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/027a8cdc-4e7a-44aa-a193-0e4d737b9031')]",
+      "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/027a8cdc-4e7a-44aa-a193-0e4d737b9031')]",
+      "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
       "kind": "Scheduled",
-      "properties": {
-        "queryFrequency": "PT5H",
-        "queryPeriod": "PT5H",
-        "triggerOperator": "GreaterThan",
-        "triggerThreshold": 0,
-        "eventGroupingSettings": {
-          "aggregationKind": "SingleAlert"
-        },
-        "incidentConfiguration": {
-          "createIncident": true,
-          "groupingConfiguration": {
-            "enabled": false,
-            "reopenClosedIncident": false,
-            "lookbackDuration": "PT5H",
-            "matchingMethod": "AllEntities",
-            "groupByEntities": [],
-            "groupByAlertDetails": [],
-            "groupByCustomDetails": []
-          }
-        },
-        "entityMappings": [
-          {
-            "entityType": "Account",
-            "fieldMappings": [
-              {
-                "identifier": "FullName",
-                "columnName": "user"
-              }
-            ]
-          }
-        ],
-        "severity": "Medium",
-        "query": "AuditLogs\r\n| where TimeGenerated >ago(7d)\r\n| where OperationName == \"Add User\"\r\n| project AddedTime = TimeGenerated, user= tostring(TargetResources[0].userPrincipalName)\r\n| join (AzureActivity\r\n| where OperationName == \"Create Role assignement\"\r\n| project OperationName, RoleAssignmentTime = TimeGenerated, user= Caller) on user\r\n| project-away user1",
-        "suppressionDuration": "PT5H",
-        "suppressionEnabled": false,
-        "tactics": [],
-        "techniques": [],
-        "displayName": "TS-audit newUser",
-        "enabled": true,
-        "description": "",
-        "alertRuleTemplateName": null,
-        "lastModifiedUtc": "2023-04-12T09:07:58.2826617Z"
-      }
+      "apiVersion": "2022-11-01-preview",
+      "properties": "{\r\n  \"queryFrequency\": \"PT5H\",\r\n  \"queryPeriod\": \"PT5H\",\r\n  \"triggerOperator\": \"GreaterThan\",\r\n  \"triggerThreshold\": 0,\r\n  \"eventGroupingSettings\": {\r\n    \"aggregationKind\": \"SingleAlert\"\r\n  },\r\n  \"incidentConfiguration\": {\r\n    \"createIncident\": true,\r\n    \"groupingConfiguration\": {\r\n      \"enabled\": false,\r\n      \"reopenClosedIncident\": false,\r\n      \"lookbackDuration\": \"PT5H\",\r\n      \"matchingMethod\": \"AllEntities\",\r\n      \"groupByEntities\": [],\r\n      \"groupByAlertDetails\": [],\r\n      \"groupByCustomDetails\": []\r\n    }\r\n  },\r\n  \"entityMappings\": [\r\n    {\r\n      \"entityType\": \"Account\",\r\n      \"fieldMappings\": [\r\n        {\r\n          \"identifier\": \"FullName\",\r\n          \"columnName\": \"user\"\r\n        }\r\n      ]\r\n    }\r\n  ],\r\n  \"severity\": \"Medium\",\r\n  \"query\": \"AuditLogs\\r\\n| where TimeGenerated >ago(7d)\\r\\n| where OperationName == \\\"Add User\\\"\\r\\n| project AddedTime = TimeGenerated, user= tostring(TargetResources[0].userPrincipalName)\\r\\n| join (AzureActivity\\r\\n| where OperationName == \\\"Create Role assignement\\\"\\r\\n| project OperationName, RoleAssignmentTime = TimeGenerated, user= Caller) on user\\r\\n| project-away user1\",\r\n  \"suppressionDuration\": \"PT5H\",\r\n  \"suppressionEnabled\": false,\r\n  \"tactics\": [],\r\n  \"techniques\": [],\r\n  \"displayName\": \"TS-audit newUser\",\r\n  \"enabled\": true,\r\n  \"description\": \"\",\r\n  \"alertRuleTemplateName\": null,\r\n  \"lastModifiedUtc\": \"2023-04-12T09:07:58.2826617Z\"\r\n}"
     }
   ]
 }

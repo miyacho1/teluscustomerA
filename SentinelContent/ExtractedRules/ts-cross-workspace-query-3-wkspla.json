@@ -48,7 +48,8 @@
         "description": "Cross workspace query test",
         "alertRuleTemplateName": null,
         "lastModifiedUtc": "2023-12-11T16:00:24.7942776Z"
-      }
+      },
+      "apiVersion": "2022-11-01-preview"
     }
   ]
 }

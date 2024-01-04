@@ -8,31 +8,19 @@
   },
   "resources": [
     {
-      "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/14a46b04-c973-4be4-95f3-837f360f51aa')]",
-      "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/14a46b04-c973-4be4-95f3-837f360f51aa')]",
-      "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+      "id": "/subscriptions/26613501-ed23-4f10-8aed-bd633914579d/resourceGroups/sales-rg/providers/Microsoft.OperationalInsights/workspaces/salesla/providers/Microsoft.SecurityInsights/alertRules/14a46b04-c973-4be4-95f3-837f360f51aa",
+      "name": "14a46b04-c973-4be4-95f3-837f360f51aa",
+      "etag": "\"7703455a-0000-0100-0000-657732210000\"",
+      "type": "Microsoft.SecurityInsights/alertRules",
       "kind": "Scheduled",
-      "apiVersion": "2022-11-01-preview",
       "properties": {
-        "displayName": "TS-Cross Workspace Query 3-WkspLA",
-        "description": "Cross workspace query test",
-        "severity": "High",
-        "enabled": true,
-        "query": "AzureActivity\r\n| take 1\r\n| summarize Counta=count() by Type, OperationNameValue, Level",
         "queryFrequency": "PT2H",
         "queryPeriod": "PT2H",
         "triggerOperator": "GreaterThan",
         "triggerThreshold": 0,
-        "suppressionDuration": "PT5H",
-        "suppressionEnabled": false,
-        "startTimeUtc": null,
-        "tactics": [
-          "Reconnaissance"
-        ],
-        "techniques": [
-          "T1595"
-        ],
-        "alertRuleTemplateName": null,
+        "eventGroupingSettings": {
+          "aggregationKind": "SingleAlert"
+        },
         "incidentConfiguration": {
           "createIncident": true,
           "groupingConfiguration": {
@@ -45,14 +33,21 @@
             "groupByCustomDetails": []
           }
         },
-        "eventGroupingSettings": {
-          "aggregationKind": "SingleAlert"
-        },
-        "alertDetailsOverride": null,
-        "customDetails": null,
-        "entityMappings": null,
-        "sentinelEntitiesMappings": null,
-        "templateVersion": null
+        "severity": "High",
+        "query": "AzureActivity\r\n| take 1\r\n| summarize Counta=count() by Type, OperationNameValue, Level",
+        "suppressionDuration": "PT5H",
+        "suppressionEnabled": false,
+        "tactics": [
+          "Reconnaissance"
+        ],
+        "techniques": [
+          "T1595"
+        ],
+        "displayName": "TS-Cross Workspace Query 3-WkspLA",
+        "enabled": true,
+        "description": "Cross workspace query test",
+        "alertRuleTemplateName": null,
+        "lastModifiedUtc": "2023-12-11T16:00:24.7942776Z"
       }
     }
   ]

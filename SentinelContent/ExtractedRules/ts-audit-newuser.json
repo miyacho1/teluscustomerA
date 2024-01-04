@@ -1,0 +1,61 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workspace": {
+      "type": "String"
+    }
+  },
+  "resources": [
+    {
+      "id": "/subscriptions/26613501-ed23-4f10-8aed-bd633914579d/resourceGroups/sales-rg/providers/Microsoft.OperationalInsights/workspaces/salesla/providers/Microsoft.SecurityInsights/alertRules/f284d334-8d86-4eb4-b196-5cb178317ad4",
+      "name": "f284d334-8d86-4eb4-b196-5cb178317ad4",
+      "etag": "\"0300e8b7-0000-0100-0000-643674f20000\"",
+      "type": "Microsoft.SecurityInsights/alertRules",
+      "kind": "Scheduled",
+      "properties": {
+        "queryFrequency": "PT5H",
+        "queryPeriod": "PT5H",
+        "triggerOperator": "GreaterThan",
+        "triggerThreshold": 0,
+        "eventGroupingSettings": {
+          "aggregationKind": "SingleAlert"
+        },
+        "incidentConfiguration": {
+          "createIncident": true,
+          "groupingConfiguration": {
+            "enabled": false,
+            "reopenClosedIncident": false,
+            "lookbackDuration": "PT5H",
+            "matchingMethod": "AllEntities",
+            "groupByEntities": [],
+            "groupByAlertDetails": [],
+            "groupByCustomDetails": []
+          }
+        },
+        "entityMappings": [
+          {
+            "entityType": "Account",
+            "fieldMappings": [
+              {
+                "identifier": "FullName",
+                "columnName": "user"
+              }
+            ]
+          }
+        ],
+        "severity": "Medium",
+        "query": "AuditLogs\r\n| where TimeGenerated >ago(7d)\r\n| where OperationName == \"Add User\"\r\n| project AddedTime = TimeGenerated, user= tostring(TargetResources[0].userPrincipalName)\r\n| join (AzureActivity\r\n| where OperationName == \"Create Role assignement\"\r\n| project OperationName, RoleAssignmentTime = TimeGenerated, user= Caller) on user\r\n| project-away user1",
+        "suppressionDuration": "PT5H",
+        "suppressionEnabled": false,
+        "tactics": [],
+        "techniques": [],
+        "displayName": "TS-audit newUser",
+        "enabled": true,
+        "description": "",
+        "alertRuleTemplateName": null,
+        "lastModifiedUtc": "2023-04-12T09:07:58.2826617Z"
+      }
+    }
+  ]
+}
